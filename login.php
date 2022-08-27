@@ -1,49 +1,57 @@
-<?php
-    if( isset($_POST["submit"]) ) {
-        // cek username & password
-        if( $_POST["email"] == "admin@admin" && $_POST["password"] == "123" ) {
-        // jika benar, redirect ke halaman admin
-            header("Location: admin.php");
-            exit;
-        } else {
-        // jika salah, tampilkan pesan kesalahan
-            $error = true;
-        }
-    }
-?>
+<?php 
+require 'functions.php';
+// cek apakah tombol login sudah tekan atau belum
+if( isset($_POST["login"]) ) {
 
+	$username = $_POST["username"];
+	$password = $_POST["password"];
+
+    $result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username'");
+
+    //cek username
+    //cek apakah ada baris yg dikembalikan
+    if( mysqli_num_rows($result) === 1 ) {
+
+		// cek password
+		$row = mysqli_fetch_assoc($result);
+		if( password_verify($password, $row["password"]) ) {
+			header("Location: index.php");
+			exit;
+		}
+	}
+
+    $error = true;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAGE LOGIN</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Login</title>
 </head>
 <body>
+    <h1>Halaman Login</h1>
+    
+<?php if( isset($error) ) : ?>
+	<p style="color: red; font-style: italic;">username / password salah!</p>
+<?php endif; ?>
 
-<?php 
-    if( isset($error) ) : 
-	echo "<script>alert('Woops! Email Atau Password anda Salah.')</script>";
-    endif; 
-?>
-
-    <div class="container">
-        <form action="" method="post" class="login-email">
-            <p class="login-text" style="font-size: 2rem; font-weight: 800">Login</p>
-            <div class="input-group">
-                <input type="email" name="email">
-            </div>
-            <div class="input-group">
-                <input type="password" name="password">
-            </div>
-            <div class="input-group">
-                <button type="submit" name="submit" class="btn">Login</button>
-            </div>
-            <p class="login-register-text">Tidak mempunyai akun? <a href="#">Daftar Disini</p>
-        </form>
-    </div>    
-
+    <ul>
+    <form action="" method="post">
+        <li>
+            <label for="username">Username :</label>
+            <input type="text" name="username" id="username">
+        </li>
+        <li>
+            <label for="password">Password :</label>
+            <input type="password" name="password" id="password">
+        </li>
+        <li>
+            <button type="submit" name="login">Login</button>
+        </li>
+    </form>    
+    </ul>
 </body>
 </html>
