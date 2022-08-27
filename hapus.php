@@ -1,4 +1,12 @@
 <?php
+session_start();
+
+//cek user tidak berhasil login
+if( !isset($_SESSION["login"]) ){ //tidak berhasil login
+    header("Location: login.php");
+    exit;
+}
+
 require 'functions.php';
 
 //tangkap id 

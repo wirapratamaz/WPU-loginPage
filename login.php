@@ -1,4 +1,13 @@
 <?php 
+//jalankan session
+session_start();
+
+//Kalau sudah login tidak perlu ke login lagi
+if ( isset($_SESSION["login"]) ){
+    header("Location: index.php");
+    exit;
+}
+
 require 'functions.php';
 // cek apakah tombol login sudah tekan atau belum
 if( isset($_POST["login"]) ) {
@@ -14,12 +23,15 @@ if( isset($_POST["login"]) ) {
 
 		// cek password
 		$row = mysqli_fetch_assoc($result);
-		if( password_verify($password, $row["password"]) ) {
-			header("Location: index.php");
+		if( password_verify($password, $row["password"]) ) {// password yg input, password yg diacak
+			//*set session
+            $_SESSION["login"] = true;
+
+            header("Location: index.php");
 			exit;
 		}
 	}
-	//error
+
     $error = true;
 }
 ?>
