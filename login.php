@@ -19,7 +19,7 @@ if( isset($_POST["login"]) ) {
 			exit;
 		}
 	}
-
+	//error
     $error = true;
 }
 ?>
