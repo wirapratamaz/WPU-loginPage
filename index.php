@@ -1,4 +1,13 @@
 <?php
+session_start();
+
+//cek user tidak berhasil login
+if( !isset($_SESSION["login"]) ){ //tidak berhasil login
+    header("Location: login.php");
+    exit;
+}
+
+
 //panggil functions.php
 require 'functions.php';
 // seluruh data biar tampil dilayar
@@ -21,6 +30,9 @@ if( isset($_POST["cari"]) ){
     <title>Halaman Admin</title>
 </head>
 <body>
+
+    <a href="logout.php">LOGOUT</a>
+
     <h1>Daftar Mahasiswa</h1>
 
     <a href="tambah.php">Tambah data mahasiswa</a>
